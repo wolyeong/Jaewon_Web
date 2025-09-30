@@ -69,6 +69,7 @@ function AuthContent() {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
+
           <InputField
             type="password"
             placeholder="Password"
