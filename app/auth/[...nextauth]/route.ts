@@ -4,6 +4,11 @@ import dbConnect from '@/db/dbConnect'
 import User from '@/db/models/users'
 import bcrypt from 'bcryptjs'
 
+/**
+ * @description nickname 중복 확인 + 사용자 정보 표시
+ * @searchParams nickname
+ */
+
 interface ExtendedUser extends DefaultUser {
   nickname?: string
 }
@@ -21,7 +26,6 @@ export default NextAuth({
         await dbConnect()
         const user = await User.findOne({ email: credentials?.email })
         if (!user) return null
-        //재입력받은 비번 해시화 이후 if문으로 비교하는 구문 추가하기
         const isValid = await bcrypt.compare(credentials!.password, user.password)
         if (!isValid) return null
 

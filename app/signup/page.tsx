@@ -10,19 +10,22 @@ export default function SignUpPage() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault() // 페이지 리로드 방지
+    if (password != password_check) {
+      setMessage('비밀번호가 일치하지 않습니다.')
+    } else {
+      try {
+        const res = await fetch('/api/signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, name, nickname, password, password_check }),
+        })
 
-    try {
-      const res = await fetch('/api/signup', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, name, nickname, password, password_check }),
-      })
-
-      const data = await res.json()
-      setMessage(data.message || '알 수 없는 오류 발생')
-    } catch (err) {
-      console.error(err)
-      setMessage('서버 오류 발생')
+        const data = await res.json()
+        setMessage(data.message || '알 수 없는 오류 발생')
+      } catch (err) {
+        console.error(err)
+        setMessage('서버 오류 발생')
+      }
     }
   }
 
@@ -63,7 +66,7 @@ export default function SignUpPage() {
         <div>
           <label>비밀번호 확인:</label>
           <input
-            type="password_check"
+            type="password"
             value={password_check}
             onChange={(e) => setPassword_check(e.target.value)}
             required
