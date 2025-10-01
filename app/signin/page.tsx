@@ -1,13 +1,27 @@
 'use client'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { signIn } from 'next-auth/react'
 
 export default function SignUpPage() {
   const [nickname, setNickname] = useState('')
   const [password, setPassword] = useState('')
+  const [message, setMessage] = useState('')
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    // 로그인 API 호출 (auth/[...nextauth])
+    // NextAuth Credentials Provider 사용
+    const res = await signIn('credentials', {
+      redirect: false, // true로 하면 로그인 성공 시 바로 redirect
+      nickname,
+      password,
+    })
+
+    if (res?.error) {
+      setMessage('로그인 실패: ' + res.error)
+    } else {
+      setMessage('로그인 성공!')
+      // 필요시 redirect 처리: 예) router.push('/')
+    }
   }
   const router = useRouter()
   return (
@@ -41,7 +55,7 @@ export default function SignUpPage() {
           회원가입하러가기
         </p>
       </form>
-      {/* {message && <p className="mt-3 text-red-600">{message}</p>} */}
+      {message && <p className="mt-3 text-red-600">{message}</p>}
     </div>
   )
 }

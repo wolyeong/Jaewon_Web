@@ -44,7 +44,7 @@ export default function SignUpPage() {
         const res = await fetch('/api/signup', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, name, nickname, password, password_check }),
+          body: JSON.stringify({ email, nickname, password, password_check }),
         })
 
         const data = await res.json()

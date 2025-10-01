@@ -1,14 +1,10 @@
 // app/api/signup/check/route.ts
 import dbConnect from '@/db/dbConnect'
-import user from '@/db/models/users'
+import user from '@/db/models/User'
 
 export async function POST(req: Request) {
   await dbConnect()
   const { email, nickname } = await req.json()
-
-  if (!email && !nickname) {
-    return new Response(JSON.stringify({ message: '이메일 또는 닉네임이 필요합니다.' }), { status: 400 })
-  }
 
   const result: { email?: string; nickname?: string } = {}
 
@@ -21,7 +17,6 @@ export async function POST(req: Request) {
     const nicknameExist = await user.findOne({ nickname })
     if (nicknameExist) result.nickname = '이미 존재하는 닉네임입니다.'
   }
-
   if (Object.keys(result).length > 0) {
     return new Response(JSON.stringify(result), { status: 400 })
   }
