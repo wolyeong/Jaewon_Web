@@ -6,6 +6,7 @@ export interface IUser extends Document {
   email: string
   nickname: string
   password: string
+  wallet: number
   user_type: string
   createdAt: Date
 }
@@ -14,6 +15,7 @@ const UserSchema: Schema<IUser> = new Schema({
   nickname: { type: String, required: true },
   password: { type: String, required: true },
   email: { type: String, required: true },
+  wallet: { type: Number, default: 0 },
   user_type: { type: String, enum: ['user', 'admin', 'super'], default: 'user' },
   createdAt: { type: Date, default: Date.now },
 })

@@ -29,9 +29,6 @@ export default function SignUpPage() {
           setMessage(dupData.nickname) // 이미 존재하는 닉네임
           return
         }
-        // 혹시 message만 있는 경우 fallback
-        setMessage(dupData.message || '이미 존재하는 계정입니다.')
-        return
       }
     } catch (err) {
       console.error(err)
@@ -73,7 +70,7 @@ export default function SignUpPage() {
           />
         </div>
         <div>
-          <label>닉네임:</label>
+          <label>아이디(닉네임):</label>
           <input
             type="text"
             value={nickname}
