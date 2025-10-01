@@ -37,6 +37,4 @@ async function dbConnect(): Promise<mongoose.Connection> {
   return cached.conn
 }
 
-console.log('MongoDB connected')
-
 export default dbConnect
