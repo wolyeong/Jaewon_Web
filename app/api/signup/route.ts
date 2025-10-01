@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
 
   const hashedPassword = await bcrypt.hash(password, 10)
 
-  const newUser = new User({ email, name, nickname, password: hashedPassword })
+  const newUser = new User({ email, nickname, password: hashedPassword })
   await newUser.save()
 
   return NextResponse.json({ message: '회원가입 완료' })

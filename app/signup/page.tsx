@@ -5,6 +5,7 @@ export default function SignUpPage() {
   const [email, setEmail] = useState('')
   const [nickname, setNickname] = useState('')
   const [password, setPassword] = useState('')
+  const [password_check, setPassword_check] = useState('')
   const [message, setMessage] = useState('')
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -14,7 +15,7 @@ export default function SignUpPage() {
       const res = await fetch('/api/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, name, nickname, password }),
+        body: JSON.stringify({ email, name, nickname, password, password_check }),
       })
 
       const data = await res.json()
@@ -55,6 +56,16 @@ export default function SignUpPage() {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            required
+            className="w-full rounded border p-2"
+          />
+        </div>
+        <div>
+          <label>비밀번호 확인:</label>
+          <input
+            type="password_check"
+            value={password_check}
+            onChange={(e) => setPassword_check(e.target.value)}
             required
             className="w-full rounded border p-2"
           />
