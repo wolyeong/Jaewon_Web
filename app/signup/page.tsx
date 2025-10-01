@@ -1,5 +1,6 @@
 'use client'
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 export default function SignUpPage() {
   const [email, setEmail] = useState('')
@@ -47,6 +48,7 @@ export default function SignUpPage() {
         })
 
         const data = await res.json()
+
         setMessage(data.message || '알 수 없는 오류 발생')
       } catch (err) {
         console.error(err)
@@ -54,7 +56,7 @@ export default function SignUpPage() {
       }
     }
   }
-
+  const router = useRouter()
   return (
     <div className="mx-auto max-w-md p-4">
       <h1 className="mb-4 text-2xl">회원가입</h1>
@@ -102,6 +104,9 @@ export default function SignUpPage() {
         <button type="submit" className="rounded bg-blue-500 py-2 text-white hover:bg-blue-600">
           가입하기
         </button>
+        <p className="mt-3 cursor-pointer text-center text-blue-500 underline" onClick={() => router.push('/signin')}>
+          로그인하러가기
+        </p>
       </form>
       {message && <p className="mt-3 text-red-600">{message}</p>}
     </div>
