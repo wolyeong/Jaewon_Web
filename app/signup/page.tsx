@@ -10,6 +10,35 @@ export default function SignUpPage() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault() // 페이지 리로드 방지
+
+    try {
+      const dupRes = await fetch('/api/signup/check', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, nickname }),
+      })
+      const dupData = await dupRes.json()
+
+      if (!dupRes.ok) {
+        // 이메일과 닉네임 각각 확인
+        if (dupData.email) {
+          setMessage(dupData.email) // 이미 존재하는 이메일
+          return
+        }
+        if (dupData.nickname) {
+          setMessage(dupData.nickname) // 이미 존재하는 닉네임
+          return
+        }
+        // 혹시 message만 있는 경우 fallback
+        setMessage(dupData.message || '이미 존재하는 계정입니다.')
+        return
+      }
+    } catch (err) {
+      console.error(err)
+      setMessage('중복 확인 중 오류 발생')
+      return
+    }
+
     if (password != password_check) {
       setMessage('비밀번호가 일치하지 않습니다.')
     } else {

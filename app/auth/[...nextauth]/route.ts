@@ -20,7 +20,6 @@ export default NextAuth({
       credentials: {
         email: { label: 'Email', type: 'email' },
         password: { label: 'Password', type: 'password' },
-        password_check: { label: 'Password_check', type: 'password_check' },
       },
       async authorize(credentials): Promise<ExtendedUser | null> {
         await dbConnect()
@@ -38,6 +37,6 @@ export default NextAuth({
     strategy: 'jwt',
   },
   pages: {
-    signIn: '/auth/signin', // 커스텀 로그인 페이지
+    signIn: '/signin', // 커스텀 로그인 페이지
   },
 })
