@@ -33,19 +33,19 @@ export async function POST(request: Request) {
     await dbConnect()
     const { email, nickname, password } = await request.json()
 
-    // if (!email || !nickname || !password) {
-    //   return NextResponse.json({ message: '필수 데이터 누락' }, { status: 400 })
-    // }
+    if (!email || !nickname || !password) {
+      return NextResponse.json({ message: '필수 데이터 누락' }, { status: 400 })
+    }
 
-    // const existingEmail = await User.findOne({ email })
-    // if (existingEmail) {
-    //   return NextResponse.json({ message: '이미 사용 중인 이메일입니다.' }, { status: 409 })
-    // }
+    const existingEmail = await User.findOne({ email })
+    if (existingEmail) {
+      return NextResponse.json({ message: '이미 사용 중인 이메일입니다.' }, { status: 409 })
+    }
 
-    // const existingNickname = await User.findOne({ nickname })
-    // if (existingNickname) {
-    //   return NextResponse.json({ message: '이미 사용 중인 닉네임입니다.' }, { status: 409 })
-    // }
+    const existingNickname = await User.findOne({ nickname })
+    if (existingNickname) {
+      return NextResponse.json({ message: '이미 사용 중인 닉네임입니다.' }, { status: 409 })
+    }
 
     const newUser = new User({ email, nickname, password })
     await newUser.save()

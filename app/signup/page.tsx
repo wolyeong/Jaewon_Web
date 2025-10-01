@@ -11,10 +11,10 @@ export default function SignUpPage() {
     e.preventDefault() // 페이지 리로드 방지
 
     try {
-      const res = await fetch('/api/users', {
+      const res = await fetch('/api/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, nickname, password }),
+        body: JSON.stringify({ email, name, nickname, password }),
       })
 
       const data = await res.json()
