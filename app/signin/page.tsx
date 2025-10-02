@@ -15,13 +15,14 @@ export default function SignUpPage() {
       nickname,
       password,
     })
+    console.log('res', res)
     if (res?.ok) {
       setMessage('로그인 성공!')
       console.log('res', 1)
       router.push('/')
     } else {
       if (res?.error) {
-        setMessage('로그인 실패: ' + res.error)
+        setMessage(res.error)
       }
     }
   }

@@ -1,21 +1,28 @@
-import Image from 'next/image' //메인 페이지
-import Link from 'next/link'
+// import Image from 'next/image' //메인 페이지
+'use client'
+import { useSession, signOut } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 
 export default function Home() {
+  const { data: session, status } = useSession()
+  const router = useRouter()
+  console.log('status in page.tsx:', status)
+  console.log('session in page.tsx:', session)
   return (
-    <div className="grid min-h-screen grid-rows-[20px_1fr_20px] items-center justify-items-center gap-16 p-8 pb-20 font-[family-name:var(--font-geist-sans)] sm:p-20">
-      <Image
-        className="dark:invert"
-        src="https://nextjs.org/icons/next.svg"
-        alt="Next.js logo"
-        width={180}
-        height={38}
-        priority
-      />
-      <h1>홈 페이지</h1>
-      <Link href="/signup">
-        <button className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600">회원가입</button>
-      </Link>
-    </div>
+    <nav className="flex gap-3">
+      {!session ? (
+        <>
+          <h1>홈 페이지</h1>
+          <button onClick={() => router.push('/signin')}>로그인</button>
+          <button onClick={() => router.push('/signup')}>회원가입</button>
+        </>
+      ) : (
+        <>
+          <h1>홈 페이지</h1>
+          <span>{session?.user?.name}님 환영합니다!</span>
+          <button onClick={() => signOut({ callbackUrl: '/' })}>로그아웃</button>
+        </>
+      )}
+    </nav>
   )
 }

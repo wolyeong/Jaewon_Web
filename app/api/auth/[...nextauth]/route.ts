@@ -15,14 +15,16 @@ export const authOptions = {
       async authorize(credentials) {
         await dbConnect()
         const user = await User.findOne({ nickname: credentials?.nickname })
-        console.log('Found user:', user)
-        if (!user) return null
+        if (!user) {
+          throw new Error('존재하지 않는 닉네임입니다.')
+        }
         if (!credentials?.password) return null
         const isValid = await bcrypt.compare(credentials.password, user.password)
         if (isValid) {
-          return { id: user._id.toString(), nickname: user.nickname }
+          return { id: user._id.toString(), name: user.nickname }
+        } else {
+          throw new Error('비밀번호가 틀렸습니다.')
         }
-        return null
       },
     }),
   ],
