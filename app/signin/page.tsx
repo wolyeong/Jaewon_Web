@@ -11,16 +11,18 @@ export default function SignUpPage() {
     e.preventDefault()
     // NextAuth Credentials Provider 사용
     const res = await signIn('credentials', {
-      redirect: false, // true로 하면 로그인 성공 시 바로 redirect
+      redirect: false,
       nickname,
       password,
     })
-
-    if (res?.error) {
-      setMessage('로그인 실패: ' + res.error)
-    } else {
+    if (res?.ok) {
       setMessage('로그인 성공!')
-      // 필요시 redirect 처리: 예) router.push('/')
+      console.log('res', 1)
+      router.push('/')
+    } else {
+      if (res?.error) {
+        setMessage('로그인 실패: ' + res.error)
+      }
     }
   }
   const router = useRouter()
