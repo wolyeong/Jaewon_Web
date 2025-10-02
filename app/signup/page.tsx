@@ -13,23 +13,53 @@ export default function SignUpPage() {
     e.preventDefault() // 페이지 리로드 방지
 
     try {
-      const dupRes = await fetch('/api/signup/check', {
+      const dupRes = await fetch('/api/signup/email_check', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, nickname }),
+        body: JSON.stringify({ email }),
       })
-      const dupData = await dupRes.json()
+      let dupData = null
+      const text = await dupRes.text()
+      if (text) {
+        dupData = JSON.parse(text)
+      }
+      // const dupData = await dupRes.json()
 
-      if (!dupRes.ok) {
-        // 이메일과 닉네임 각각 확인
-        if (dupData.email) {
-          setMessage(dupData.email) // 이미 존재하는 이메일
-          return
-        }
-        if (dupData.nickname) {
-          setMessage(dupData.nickname) // 이미 존재하는 닉네임
-          return
-        }
+      // 백엔드에서 email/nickname 값을 문자열로 직접 반환하므로
+      if (dupData?.check) {
+        console.log('check_dupData', dupData)
+        setMessage(dupData.message)
+        return
+      } else {
+        // 정상 200 응답
+        setMessage(dupData.message)
+      }
+    } catch (err) {
+      console.error(err)
+      setMessage('중복 확인 중 오류 발생')
+      return
+    }
+    try {
+      const dupRes = await fetch('/api/signup/nickname_check', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nickname }),
+      })
+      let dupData = null
+      const text = await dupRes.text()
+      if (text) {
+        dupData = JSON.parse(text)
+      }
+      // const dupData = await dupRes.json()
+
+      // 백엔드에서 email/nickname 값을 문자열로 직접 반환하므로
+      if (dupData?.check) {
+        console.log('check_dupData', dupData)
+        setMessage(dupData.message)
+        return
+      } else {
+        // 정상 200 응답
+        setMessage(dupData.message)
       }
     } catch (err) {
       console.error(err)
