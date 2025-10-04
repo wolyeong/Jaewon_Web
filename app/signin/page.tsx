@@ -51,10 +51,10 @@ export default function SignUpPage() {
             className="w-full rounded border p-2"
           />
         </div>
-        <button type="submit" className="rounded bg-blue-500 py-2 text-white hover:bg-blue-600">
+        <button type="submit" className="rounded bg-black/90 py-2 text-white hover:bg-black">
           로그인
         </button>
-        <p className="mt-3 cursor-pointer text-center text-blue-500 underline" onClick={() => router.push('/signup')}>
+        <p className="mt-3 cursor-pointer text-center text-black underline" onClick={() => router.push('/signup')}>
           회원가입하러가기
         </p>
       </form>
