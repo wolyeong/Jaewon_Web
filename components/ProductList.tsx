@@ -8,7 +8,6 @@ interface Product {
   image: string
   price: number
   category: string[]
-  description: string
   specs: Record<string, string>
 }
 
@@ -35,7 +34,6 @@ export default function ProductList() {
             <Image src={product.image} alt={product.name} width={400} height={160} className="rounded object-cover" />
           )}
           <h3 className="mt-2 text-lg font-bold">{product.name}</h3>
-          <p className="text-sm text-muted-foreground">{product.description}</p>
           <p className="mt-1 font-semibold">₩{product.price.toLocaleString()}</p>
           {product.category?.length && <p className="mt-1 text-xs text-gray-500">{product.category.join(', ')}</p>}
         </div>

@@ -12,11 +12,11 @@ export async function POST(req: Request) {
       image: data.image,
       stock: data.stock,
       price: data.price,
-      category: data.category || '기타',
-      description: data.description || '',
-      specs: data.specs || {},
+      category: data.category,
+      description: data.description,
+      specs: data.specs,
     })
-
+    console.log('Created Product:', newProduct)
     return NextResponse.json(newProduct, { status: 201 })
   } catch (error) {
     console.error(error)
