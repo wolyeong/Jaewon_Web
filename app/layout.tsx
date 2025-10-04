@@ -4,8 +4,8 @@ import ClientProviders from './ClientProviders'
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ko">
-      <body>
+    <html lang="ko" className="h-full">
+      <body className="h-full">
         <ClientProviders>{children}</ClientProviders>
       </body>
     </html>

@@ -13,7 +13,6 @@ const geistMono = { variable: '--font-geist-mono' }
 const AuthButtons = () => {
   const { data: session } = useSession()
   const router = useRouter()
-  console.log('session:', session)
   if (!session) {
     // 비 로그인 상태일 때
     return (

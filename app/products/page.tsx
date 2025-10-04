@@ -87,6 +87,7 @@ export default function Products() {
 
           {/* 인증 버튼 및 장바구니 */}
           <div className="flex flex-1 items-center justify-end space-x-2 sm:space-x-4">
+            <ProductAddButton />
             <AuthButtons />
             <Button variant="outline" size="icon" onClick={() => router.push('/cart')}>
               <Image
@@ -130,7 +131,6 @@ export default function Products() {
           </div>
         </section>
         */}
-        <ProductAddButton />
       </main>
 
       {/* Footer */}
