@@ -13,7 +13,7 @@ const geistMono = { variable: '--font-geist-mono' }
 const AuthButtons = () => {
   const { data: session } = useSession()
   const router = useRouter()
-  console.log('session:', session)
+
   if (!session) {
     // 비 로그인 상태일 때
     return (
@@ -103,16 +103,6 @@ export default function Home() {
 
       {/* Hero */}
       <main>
-        <section className="container mx-auto px-4 py-16 text-center md:px-6 md:py-24">
-          <h1 className="mb-4 text-4xl font-extrabold md:text-6xl">필요하신 물건이 있으신가요?</h1>
-          <p className="mx-auto mb-8 max-w-2xl text-muted-foreground md:text-xl">
-            저희 Jaewon Store에서 다양한 상품을 만나보세요. 최고의 품질과 합리적인 가격으로 제공됩니다.
-          </p>
-          <Button size="lg" onClick={() => router.push('/products')}>
-            쇼핑하러가기
-          </Button>
-        </section>
-
         {/* Products 
         <section className="bg-muted/40">
           <div className="container mx-auto px-4 py-12 md:px-6">
