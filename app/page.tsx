@@ -58,7 +58,7 @@ export default function Home() {
   return (
     <div className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
       {/* Navigation Bar (수정된 부분) */}
-      <header className="bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 w-full border-b backdrop-blur">
+      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container mx-auto flex h-16 items-center px-4 md:px-6">
           {/* 왼쪽 영역 (로고) */}
           <div className="flex-1">
@@ -70,13 +70,13 @@ export default function Home() {
 
           {/* 가운데 영역 (내비게이션 링크) - 이제 항상 중앙에 고정됩니다 */}
           <nav className="hidden items-center space-x-6 text-sm font-medium md:flex">
-            <a href="/" className="hover:text-primary text-foreground transition-colors">
+            <a href="/" className="text-foreground transition-colors hover:text-primary">
               Home
             </a>
-            <a href="/products" className="text-muted-foreground hover:text-primary transition-colors">
+            <a href="/products" className="text-muted-foreground transition-colors hover:text-primary">
               Products
             </a>
-            <a href="/orders" className="text-muted-foreground hover:text-primary transition-colors">
+            <a href="/orders" className="text-muted-foreground transition-colors hover:text-primary">
               Orders
             </a>
           </nav>
@@ -96,7 +96,7 @@ export default function Home() {
       <main>
         <section className="container mx-auto px-4 py-16 text-center md:px-6 md:py-24">
           <h1 className="mb-4 text-4xl font-extrabold md:text-6xl">Discover Your Next Favorite Thing</h1>
-          <p className="text-muted-foreground mx-auto mb-8 max-w-2xl md:text-xl">
+          <p className="mx-auto mb-8 max-w-2xl text-muted-foreground md:text-xl">
             Browse our curated collection of high-quality products.
           </p>
           <Button size="lg" onClick={() => router.push('/products')}>
@@ -120,7 +120,7 @@ export default function Home() {
                   </CardHeader>
                   <CardContent className="p-4">
                     <CardTitle>{prod.name}</CardTitle>
-                    <p className="text-muted-foreground mt-2 font-semibold">{prod.price}</p>
+                    <p className="mt-2 font-semibold text-muted-foreground">{prod.price}</p>
                   </CardContent>
                   <CardFooter className="p-4 pt-0">
                     <Button className="w-full">Add to Cart</Button>
@@ -134,7 +134,7 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="container mx-auto px-4 py-6 md:px-6">
-        <p className="text-muted-foreground text-center text-sm">
+        <p className="text-center text-sm text-muted-foreground">
           © {new Date().getFullYear()} My Store. All rights reserved.
         </p>
       </footer>
