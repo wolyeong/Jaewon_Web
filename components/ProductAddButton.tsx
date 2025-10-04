@@ -5,13 +5,17 @@ import { useSession } from 'next-auth/react'
 import { Button } from '@/components/ui/button'
 import ProductAddModal from './ProductAddModal'
 
-export default function ProductAddButton() {
+interface ProductAddButtonProps {
+  onAdded?: () => void // 부모에게 갱신 콜백 전달 가능
+}
+
+export default function ProductAddButton({ onAdded }: ProductAddButtonProps) {
   const { data: session } = useSession()
   const [open, setOpen] = useState(false) // 모달 열림/닫힘 상태
-  // 세션에 유저 정보가 있을 때만 접근
+
   const userType = session?.user?.user_type
-  console.log('ProductAddButton 호출 성공', userType)
-  // user_type이 admin이 아닐 경우 버튼 숨김
+
+  // admin만 버튼 표시
   if (userType === 'admin') {
     return (
       <>
@@ -20,7 +24,15 @@ export default function ProductAddButton() {
         </Button>
 
         {/* 모달 컴포넌트 */}
-        {open && <ProductAddModal onClose={() => setOpen(false)} />}
+        {open && (
+          <ProductAddModal
+            onClose={() => setOpen(false)}
+            onAdded={() => {
+              onAdded?.() // 부모 콜백 호출
+              setOpen(false) // 모달 닫기
+            }}
+          />
+        )}
       </>
     )
   }

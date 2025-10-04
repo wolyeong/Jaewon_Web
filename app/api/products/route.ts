@@ -14,7 +14,6 @@ export async function POST(req: Request) {
       price: data.price,
       category: data.category || '기타',
       description: data.description || '',
-      recommended: data.recommended || false,
       specs: data.specs || {},
     })
 

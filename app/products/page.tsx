@@ -6,6 +6,7 @@ import ProductAddButton from '@/components/ProductAddButton'
 import { useRouter } from 'next/navigation'
 import { useSession, signOut } from 'next-auth/react'
 import Image from 'next/image'
+import ProductList from '@/components/ProductList'
 
 const geistSans = { variable: '--font-geist-sans' }
 const geistMono = { variable: '--font-geist-mono' }
@@ -46,13 +47,6 @@ const AuthButtons = () => {
 export default function Products() {
   const router = useRouter()
 
-  // const products = Array.from({ length: 4 }, (_, i) => ({
-  //   id: i + 1,
-  //   name: `Awesome Gadget ${i + 1}`,
-  //   price: '$99.99',
-  //   img: `https://placehold.co/600x600/e2e8f0/475569?text=Product+${i + 1}`,
-  // }))
-
   return (
     <div className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
       {/* 내비게이션 바 */}
@@ -87,7 +81,7 @@ export default function Products() {
 
           {/* 인증 버튼 및 장바구니 */}
           <div className="flex flex-1 items-center justify-end space-x-2 sm:space-x-4">
-            <ProductAddButton />
+            <ProductAddButton /> {/* 모달 호출은 여기에서 처리 */}
             <AuthButtons />
             <Button variant="outline" size="icon" onClick={() => router.push('/cart')}>
               <Image
@@ -102,35 +96,10 @@ export default function Products() {
         </div>
       </header>
 
-      {/* Hero */}
-      <main>
-        {/* Products 
-        <section className="bg-muted/40">
-          <div className="container mx-auto px-4 py-12 md:px-6">
-            <h2 className="mb-8 text-center text-3xl font-bold">추천 상품들</h2>
-            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-              {products.map((prod) => (
-                <Card key={prod.id} className="overflow-hidden">
-                  <CardHeader className="p-0">
-                    <img
-                      src={prod.img}
-                      alt={prod.name}
-                      className="aspect-square w-full object-cover transition-transform hover:scale-105"
-                    />
-                  </CardHeader>
-                  <CardContent className="p-4">
-                    <CardTitle>{prod.name}</CardTitle>
-                    <p className="mt-2 font-semibold text-muted-foreground">{prod.price}</p>
-                  </CardContent>
-                  <CardFooter className="p-4 pt-0">
-                    <Button className="w-full">장바구니에 추가</Button>
-                  </CardFooter>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
-        */}
+      {/* Hero / 상품 리스트 영역 */}
+      <main className="container mx-auto px-4 py-6 md:px-6">
+        <h1 className="p-6 text-center text-2xl font-bold">상품 목록</h1>
+        <ProductList />
       </main>
 
       {/* Footer */}

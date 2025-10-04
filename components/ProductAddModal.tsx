@@ -8,18 +8,18 @@ import { Label } from '@/components/ui/label'
 
 interface ProductAddModalProps {
   onClose: () => void
+  onAdded: () => void // 상품 추가 후 부모에게 갱신 요청
 }
 
-export default function ProductAddModal({ onClose }: ProductAddModalProps) {
+export default function ProductAddModal({ onClose, onAdded }: ProductAddModalProps) {
   const [mounted, setMounted] = useState(false)
   const [productName, setProductName] = useState('')
   const [productImage, setProductImage] = useState('')
   const [stock, setStock] = useState(100)
   const [price, setPrice] = useState(1000)
-  const [category, setCategory] = useState('')
+  const [category, setCategory] = useState('기타') // 입력 문자열
   const [description, setDescription] = useState('')
-  const [recommended, setRecommended] = useState(false)
-  const [specs, setSpecs] = useState('{}') // JSON 형태 입력
+  const [specs, setSpecs] = useState('') // "key:value, key:value" 형태 입력
 
   useEffect(() => {
     setMounted(true)
@@ -30,13 +30,18 @@ export default function ProductAddModal({ onClose }: ProductAddModalProps) {
       alert('상품 이름과 이미지 URL은 필수입니다.')
       return
     }
+    const categoryArray = category
+      .split(',')
+      .map((c) => c.trim())
+      .filter((c) => c)
 
-    let parsedSpecs: object = {}
-    try {
-      parsedSpecs = JSON.parse(specs)
-    } catch {
-      alert('상세 스펙은 올바른 JSON 형식이어야 합니다.')
-      return
+    // specs 파싱: "key:value, key:value" -> { key: value, ... }
+    const parsedSpecs: Record<string, string> = {}
+    if (specs.trim()) {
+      specs.split(',').forEach((item) => {
+        const [key, value] = item.split(':').map((s) => s.trim())
+        if (key && value) parsedSpecs[key] = value
+      })
     }
 
     try {
@@ -48,16 +53,16 @@ export default function ProductAddModal({ onClose }: ProductAddModalProps) {
           image: productImage,
           stock,
           price,
-          category,
+          category: categoryArray,
           description,
-          recommended,
-          specs: parsedSpecs,
+          specs: {},
         }),
       })
 
       if (!res.ok) throw new Error('상품 추가 실패')
       const data = await res.json()
       console.log('상품 추가 성공:', data)
+      onAdded() // 부모에게 갱신 요청
       onClose()
     } catch (error) {
       console.error(error)
@@ -89,20 +94,16 @@ export default function ProductAddModal({ onClose }: ProductAddModalProps) {
             <Input type="number" value={price} onChange={(e) => setPrice(Number(e.target.value))} />
           </div>
           <div className="grid gap-1">
-            <Label>카테고리</Label>
-            <Input value={category} onChange={(e) => setCategory(e.target.value)} />
+            <Label>카테고리 (쉼표로 구분)</Label>
+            <Input value={category} onChange={(e) => setCategory(e.target.value)} placeholder="예: 신선식품, 간편식" />
           </div>
           <div className="grid gap-1">
             <Label>상품 설명</Label>
             <Input value={description} onChange={(e) => setDescription(e.target.value)} />
           </div>
           <div className="grid gap-1">
-            <Label>추천 상품 여부</Label>
-            <input type="checkbox" checked={recommended} onChange={(e) => setRecommended(e.target.checked)} />
-          </div>
-          <div className="grid gap-1">
-            <Label>상세 스펙 (JSON)</Label>
-            <Input value={specs} onChange={(e) => setSpecs(e.target.value)} placeholder='{"용량":"300g"}' />
+            <Label>상세 스펙 (key:value, key:value)</Label>
+            <Input value={specs} onChange={(e) => setSpecs(e.target.value)} placeholder="ex) 용량:300g, 포장:소포장" />
           </div>
         </div>
 
