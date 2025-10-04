@@ -54,10 +54,16 @@ export default function SignUpPage() {
         <button type="submit" className="rounded bg-black/90 py-2 text-white hover:bg-black">
           로그인
         </button>
+      </form>
+      <div className="mt-3 flex items-center justify-center text-center">
+        <p className="mt-3 cursor-pointer text-center text-black underline" onClick={() => router.push('/')}>
+          홈페이지로 돌아가기
+        </p>
+        <span className="mx-6 mt-2.5 text-black">|</span>
         <p className="mt-3 cursor-pointer text-center text-black underline" onClick={() => router.push('/signup')}>
           회원가입하러가기
         </p>
-      </form>
+      </div>
       {message && <p className="mt-3 text-red-600">{message}</p>}
     </div>
   )
