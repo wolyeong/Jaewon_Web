@@ -12,6 +12,10 @@ export async function POST(req: Request) {
       image: data.image,
       stock: data.stock,
       price: data.price,
+      category: data.category || '기타',
+      description: data.description || '',
+      recommended: data.recommended || false,
+      specs: data.specs || {},
     })
 
     return NextResponse.json(newProduct, { status: 201 })

@@ -16,6 +16,10 @@ export default function ProductAddModal({ onClose }: ProductAddModalProps) {
   const [productImage, setProductImage] = useState('')
   const [stock, setStock] = useState(100)
   const [price, setPrice] = useState(1000)
+  const [category, setCategory] = useState('')
+  const [description, setDescription] = useState('')
+  const [recommended, setRecommended] = useState(false)
+  const [specs, setSpecs] = useState('{}') // JSON 형태 입력
 
   useEffect(() => {
     setMounted(true)
@@ -26,6 +30,15 @@ export default function ProductAddModal({ onClose }: ProductAddModalProps) {
       alert('상품 이름과 이미지 URL은 필수입니다.')
       return
     }
+
+    let parsedSpecs: object = {}
+    try {
+      parsedSpecs = JSON.parse(specs)
+    } catch {
+      alert('상세 스펙은 올바른 JSON 형식이어야 합니다.')
+      return
+    }
+
     try {
       const res = await fetch('/api/products', {
         method: 'POST',
@@ -33,8 +46,12 @@ export default function ProductAddModal({ onClose }: ProductAddModalProps) {
         body: JSON.stringify({
           name: productName,
           image: productImage,
-          stock: stock,
-          price: price,
+          stock,
+          price,
+          category,
+          description,
+          recommended,
+          specs: parsedSpecs,
         }),
       })
 
@@ -68,8 +85,24 @@ export default function ProductAddModal({ onClose }: ProductAddModalProps) {
             <Input type="number" value={stock} onChange={(e) => setStock(Number(e.target.value))} />
           </div>
           <div className="grid gap-1">
-            <Label>가격</Label>
-            <Input value={price} onChange={(e) => setPrice(Number(e.target.value))} />
+            <Label>가격(₩)</Label>
+            <Input type="number" value={price} onChange={(e) => setPrice(Number(e.target.value))} />
+          </div>
+          <div className="grid gap-1">
+            <Label>카테고리</Label>
+            <Input value={category} onChange={(e) => setCategory(e.target.value)} />
+          </div>
+          <div className="grid gap-1">
+            <Label>상품 설명</Label>
+            <Input value={description} onChange={(e) => setDescription(e.target.value)} />
+          </div>
+          <div className="grid gap-1">
+            <Label>추천 상품 여부</Label>
+            <input type="checkbox" checked={recommended} onChange={(e) => setRecommended(e.target.checked)} />
+          </div>
+          <div className="grid gap-1">
+            <Label>상세 스펙 (JSON)</Label>
+            <Input value={specs} onChange={(e) => setSpecs(e.target.value)} placeholder='{"용량":"300g"}' />
           </div>
         </div>
 
