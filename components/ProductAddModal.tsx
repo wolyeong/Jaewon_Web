@@ -55,7 +55,7 @@ export default function ProductAddModal({ onClose, onAdded }: ProductAddModalPro
           price,
           category: categoryArray,
           description,
-          specs: {},
+          specs: parsedSpecs,
         }),
       })
 
