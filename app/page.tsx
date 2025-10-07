@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { Button } from '@/components/ui/button'
+import AuthWrapper from '@/components/AuthWrapper'
 // import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { useRouter } from 'next/navigation'
 import { useSession, signOut } from 'next-auth/react'
@@ -80,15 +81,18 @@ export default function Home() {
           {/* 인증 버튼 및 장바구니 */}
           <div className="flex flex-1 items-center justify-end space-x-2 sm:space-x-4">
             <AuthButtons />
-            <Button variant="outline" size="icon" onClick={() => router.push('/cart')}>
-              <Image
-                src="https://res.cloudinary.com/dku4lvt13/image/upload/v1759560990/cart_ulrcn7.png"
-                alt="장바구니"
-                width={28}
-                height={28}
-              />
-              <span className="sr-only">Cart</span>
-            </Button>
+
+            <AuthWrapper onLoginRedirect={() => router.push('/login')}>
+              <Button variant="outline" size="icon">
+                <Image
+                  src="https://res.cloudinary.com/dku4lvt13/image/upload/v1759560990/cart_ulrcn7.png"
+                  alt="장바구니"
+                  width={28}
+                  height={28}
+                />
+                <span className="sr-only">Cart</span>
+              </Button>
+            </AuthWrapper>
           </div>
         </div>
       </header>
@@ -106,7 +110,7 @@ export default function Home() {
         </section>
 
         {/* Products 
-        
+    
         */}
       </main>
 

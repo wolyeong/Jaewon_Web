@@ -99,6 +99,7 @@ export default function Products() {
       {/* Hero / 상품 리스트 영역 */}
       <main className="container mx-auto px-4 py-6 md:px-6">
         <h1 className="p-6 text-center text-2xl font-bold">상품 목록</h1>
+        <h2 className="p-2 text-center text-xl font-bold">이름에 마우스를 올리면 상세 정보가 보여요!</h2>
         <ProductList />
       </main>
 
