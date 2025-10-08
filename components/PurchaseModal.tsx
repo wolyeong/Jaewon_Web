@@ -1,24 +1,19 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
+import React from 'react'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog'
-
-interface CartItem {
-  product: { _id: string; name: string; price: number }
-  quantity: number
-}
+import { Button } from '@/components/ui/button'
 
 interface PurchaseModalProps {
-  cartItems: CartItem[]
-  balance: number
   open: boolean
   setOpen: (open: boolean) => void
+  totalPrice: number
+  balance: number
   onPurchase: () => void
 }
 
-export default function PurchaseModal({ cartItems, balance, open, setOpen, onPurchase }: PurchaseModalProps) {
-  const totalPrice = cartItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0)
-  const canPurchase = balance >= totalPrice
+export default function PurchaseModal({ open, setOpen, totalPrice, balance, onPurchase }: PurchaseModalProps) {
+  const isEnough = balance >= totalPrice
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -26,23 +21,27 @@ export default function PurchaseModal({ cartItems, balance, open, setOpen, onPur
         <DialogHeader>
           <DialogTitle>구매 확인</DialogTitle>
         </DialogHeader>
-
-        <p>
-          현재 잔고: <span className="font-semibold">{balance.toLocaleString()}원</span>
-        </p>
-        <p>
-          총 금액: <span className="font-semibold">{totalPrice.toLocaleString()}원</span>
-        </p>
-        {!canPurchase && <p className="mt-2 text-red-500">잔고가 부족합니다!</p>}
-
-        <DialogFooter className="mt-4 flex justify-end gap-2">
-          <Button variant="outline" onClick={() => setOpen(false)}>
-            취소
+        <div className="space-y-4 text-center">
+          <p>
+            현재 잔고: <b>₩{balance.toLocaleString()}</b>
+          </p>
+          <p>
+            총 결제 금액: <b>₩{totalPrice.toLocaleString()}</b>
+          </p>
+          {!isEnough && <p className="text-red-500">잔고가 부족합니다.</p>}
+        </div>
+        <DialogFooter className="flex justify-between">
+          <Button
+            onClick={onPurchase}
+            disabled={!isEnough}
+            className={`w-full ${!isEnough ? 'bg-gray-400' : 'bg-black text-white hover:bg-black/80'}`}
+          >
+            구매하기
           </Button>
-          {canPurchase ? (
-            <Button onClick={onPurchase}>구매하기</Button>
-          ) : (
-            <Button onClick={() => alert('충전 기능 준비중')}>금액 충전</Button>
+          {!isEnough && (
+            <Button variant="outline" className="mt-2 w-full">
+              금액 충전하기
+            </Button>
           )}
         </DialogFooter>
       </DialogContent>

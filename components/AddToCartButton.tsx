@@ -6,16 +6,22 @@ import { useSession } from 'next-auth/react'
 
 interface AddToCartButtonProps {
   productId: string
-  children?: React.ReactNode // ← 추가
+  stock: number
+  children?: React.ReactNode
 }
 
-export default function AddToCartButton({ productId, children }: AddToCartButtonProps) {
+export default function AddToCartButton({ productId, stock, children }: AddToCartButtonProps) {
   const { data: session } = useSession()
   const [loading, setLoading] = useState(false)
 
   const handleAddToCart = async () => {
     if (!session?.user?.nickname) {
       alert('로그인 후 이용 가능합니다.')
+      return
+    }
+
+    if (stock <= 0) {
+      alert('재고가 없습니다.')
       return
     }
 
@@ -41,8 +47,8 @@ export default function AddToCartButton({ productId, children }: AddToCartButton
   }
 
   return (
-    <Button className="w-full" onClick={handleAddToCart} disabled={loading}>
-      {loading ? '장바구니에 담는 중...' : children || '장바구니 담기'}
+    <Button className="w-full" onClick={handleAddToCart} disabled={stock <= 0}>
+      {stock <= 0 ? '품절' : loading ? '장바구니에 담는 중...' : children || '장바구니 담기'}
     </Button>
   )
 }

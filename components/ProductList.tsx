@@ -55,7 +55,7 @@ export default function ProductList() {
                       <ul className="list-disc pl-4">
                         {Object.entries(product.specs).map(([key, value]) => (
                           <li key={key}>
-                            <strong>{key}:</strong> {value}
+                            <strong>{key}:</strong> {value}{' '}
                           </li>
                         ))}
                       </ul>
@@ -74,12 +74,11 @@ export default function ProductList() {
               <p className="mt-1 py-2 text-xs text-gray-500">{product.category.join(', ')}</p>
             )}
 
-            {/* 품절 표시 */}
-            {isSoldOut && <p className="mt-1 font-bold text-red-600">품절</p>}
-
             {/* 장바구니 버튼 */}
             <AuthWrapper onLoginRedirect={() => router.push('/signin')}>
-              <AddToCartButton productId={product._id}>장바구니 담기</AddToCartButton>
+              <AddToCartButton productId={product._id} stock={product.stock}>
+                장바구니 담기
+              </AddToCartButton>
             </AuthWrapper>
           </div>
         )

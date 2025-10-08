@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
 import { Button } from '@/components/ui/button'
+import PurchaseModal from '@/components/PurchaseModal' // ✅ 추가
 
 interface Product {
   _id: string
@@ -25,9 +26,12 @@ export default function CartList() {
   const [cartItems, setCartItems] = useState<CartItem[]>([])
   const [loading, setLoading] = useState(true)
   const [updating, setUpdating] = useState<Record<string, boolean>>({})
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [balance] = useState(50000) // 💰 예시 잔고 (추후 DB연동 가능)
 
   const nickname = session?.user?.nickname
 
+  // 장바구니 불러오기
   useEffect(() => {
     const fetchCart = async () => {
       if (!nickname) {
@@ -48,6 +52,7 @@ export default function CartList() {
     fetchCart()
   }, [nickname])
 
+  // 수량 변경
   const handleQuantityChange = async (productId: string, delta: number) => {
     if (!nickname || updating[productId]) return
 
@@ -74,6 +79,7 @@ export default function CartList() {
     }
   }
 
+  // 장바구니 전체 삭제
   const handleClearAll = async () => {
     if (!nickname) return
     setCartItems([])
@@ -88,7 +94,15 @@ export default function CartList() {
     }
   }
 
+  // 총 결제 금액
   const totalPrice = cartItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0)
+
+  // 구매 버튼 클릭 시
+  const handlePurchase = () => {
+    alert('구매가 완료되었습니다!')
+    setIsModalOpen(false)
+    // ✅ 여기서 구매 기록 저장 API 호출 가능 (/api/purchase/add 등)
+  }
 
   if (loading) return <p className="text-center text-3xl font-bold">장바구니를 불러오는 중...</p>
   if (!cartItems.length) return <p className="text-center text-3xl font-bold">장바구니가 비어있습니다.</p>
@@ -156,13 +170,19 @@ export default function CartList() {
 
       <div className="mt-6 flex justify-end py-10">
         <div className="px-20 text-xl font-bold">합계: ₩{totalPrice.toLocaleString()}</div>
-        <Button
-          className="bg-black/90 text-white hover:bg-black"
-          onClick={() => alert(`총 결제금액: ₩${totalPrice.toLocaleString()}`)}
-        >
+        <Button className="bg-black/90 text-white hover:bg-black" onClick={() => setIsModalOpen(true)}>
           구매하기
         </Button>
       </div>
+
+      {/* ✅ 구매 모달 */}
+      <PurchaseModal
+        open={isModalOpen}
+        setOpen={setIsModalOpen}
+        totalPrice={totalPrice}
+        balance={balance}
+        onPurchase={handlePurchase}
+      />
     </div>
   )
 }
