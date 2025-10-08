@@ -62,7 +62,7 @@ export default function ProductAddModal({ onClose, onAdded }: ProductAddModalPro
       if (!res.ok) throw new Error('상품 추가 실패')
       const data = await res.json()
       console.log('상품 추가 성공:', data)
-      onAdded() // 부모에게 갱신 요청
+      onAdded()
       onClose()
     } catch (error) {
       console.error(error)

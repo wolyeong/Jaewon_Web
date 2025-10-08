@@ -47,7 +47,11 @@ export default function Products() {
 
           {/* 인증 버튼 및 장바구니 */}
           <div className="flex flex-1 items-center justify-end space-x-2 sm:space-x-4">
-            <ProductAddButton />
+            <ProductAddButton
+              onAdded={() => {
+                window.location.reload()
+              }}
+            />
             <AuthButtons />
             <Button variant="outline" size="icon" onClick={() => router.push('/cart')}>
               <Image
@@ -70,7 +74,7 @@ export default function Products() {
       </main>
 
       {/* Footer */}
-      <footer className="container mx-auto px-4 py-40 md:px-6">
+      <footer className="container mx-auto px-4 py-10 md:px-6">
         <p className="text-center text-sm text-muted-foreground">
           © {new Date().getFullYear()} Jaewon Store. All rights reserved.
         </p>
