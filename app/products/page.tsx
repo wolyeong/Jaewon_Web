@@ -3,6 +3,7 @@
 import React from 'react'
 import { Button } from '@/components/ui/button'
 import ProductAddButton from '@/components/ProductAddButton'
+import AuthWrapper from '@/components/AuthWrapper'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import ProductList from '@/components/ProductList'
@@ -40,9 +41,11 @@ export default function Products() {
             <a href="/products" className="text-muted-foreground transition-colors hover:text-primary">
               Products
             </a>
-            <a href="/orders" className="text-muted-foreground transition-colors hover:text-primary">
-              Orders
-            </a>
+            <AuthWrapper onLoginRedirect={() => router.push('/signin')}>
+              <a href="/orders" className="text-muted-foreground transition-colors hover:text-primary">
+                Orders
+              </a>
+            </AuthWrapper>
           </nav>
 
           {/* 인증 버튼 및 장바구니 */}
@@ -53,15 +56,17 @@ export default function Products() {
               }}
             />
             <AuthButtons />
-            <Button variant="outline" size="icon" onClick={() => router.push('/cart')}>
-              <Image
-                src="https://res.cloudinary.com/dku4lvt13/image/upload/v1759560990/cart_ulrcn7.png"
-                alt="장바구니"
-                width={28}
-                height={28}
-              />
-              <span className="sr-only">Cart</span>
-            </Button>
+            <AuthWrapper onLoginRedirect={() => router.push('/signin')}>
+              <Button variant="outline" size="icon" onClick={() => router.push('/cart')}>
+                <Image
+                  src="https://res.cloudinary.com/dku4lvt13/image/upload/v1759560990/cart_ulrcn7.png"
+                  alt="장바구니"
+                  width={28}
+                  height={28}
+                />
+                <span className="sr-only">Cart</span>
+              </Button>
+            </AuthWrapper>
           </div>
         </div>
       </header>

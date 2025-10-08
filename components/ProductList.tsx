@@ -2,6 +2,8 @@
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
+import AuthWrapper from '@/components/AuthWrapper'
+import { useRouter } from 'next/navigation'
 
 interface Product {
   _id: string
@@ -17,6 +19,7 @@ interface Product {
 export default function ProductList() {
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
+  const router = useRouter()
 
   useEffect(() => {
     fetch('/api/products_list')
@@ -75,14 +78,16 @@ export default function ProductList() {
             {isSoldOut && <p className="mt-1 font-bold text-red-600">품절</p>}
 
             {/* 장바구니 버튼 */}
-            <Button
-              disabled={isSoldOut}
-              className={`mt-3 w-full rounded py-2 text-white ${
-                isSoldOut ? 'cursor-not-allowed bg-gray-400' : 'bg-blue-600 hover:bg-blue-700'
-              }`}
-            >
-              장바구니 담기
-            </Button>
+            <AuthWrapper onLoginRedirect={() => router.push('/signin')}>
+              <Button
+                disabled={isSoldOut}
+                className={`mt-3 w-full rounded py-2 text-white ${
+                  isSoldOut ? 'cursor-not-allowed bg-gray-400' : 'bg-blue-600 hover:bg-blue-700'
+                }`}
+              >
+                장바구니 담기
+              </Button>
+            </AuthWrapper>
           </div>
         )
       })}

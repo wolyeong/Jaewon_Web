@@ -1,14 +1,17 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
+import Image from 'next/image'
+
+interface ProductRef {
+  _id: string
+  name: string
+  price: number
+  image: string
+}
 
 interface CartItemProps {
-  productId: {
-    _id: string
-    name: string
-    price: number
-    image: string
-  }
+  productId: ProductRef
   quantity: number
 }
 
@@ -24,12 +27,14 @@ export default function CartList({ onTotalUpdate }: CartListProps) {
     try {
       const res = await fetch('/api/cartRoute')
       const data = await res.json()
-      setCartItems(data.cart?.items || [])
-      const totalPrice = data.cart?.items?.reduce(
-        (sum: number, item: CartItemProps) => sum + item.productId.price * item.quantity,
-        0
-      )
-      onTotalUpdate?.(totalPrice || 0)
+      const items: CartItemProps[] = data.cart?.items || []
+      setCartItems(items)
+
+      const totalPrice = items.reduce((sum: number, item: CartItemProps) => {
+        return sum + item.productId.price * item.quantity
+      }, 0)
+
+      onTotalUpdate?.(totalPrice)
     } catch (err) {
       console.error(err)
     } finally {
@@ -41,16 +46,22 @@ export default function CartList({ onTotalUpdate }: CartListProps) {
     fetchCart()
   }, [])
 
-  if (loading) return <p className="text-center">장바구니를 불러오는 중...</p>
-  if (!cartItems.length) return <p className="text-center">장바구니가 비어있습니다.</p>
+  if (loading) return <p className="text-center text-3xl font-bold">장바구니를 불러오는 중...</p>
+  if (!cartItems.length) return <p className="text-center text-3xl font-bold">장바구니가 비어있습니다.</p>
 
   return (
     <div className="space-y-4">
-      {cartItems.map((item) => (
+      {cartItems.map((item: CartItemProps) => (
         <div key={item.productId._id} className="flex items-center justify-between rounded border p-4 shadow">
           <div className="flex items-center space-x-4">
             {item.productId.image && (
-              <img src={item.productId.image} alt={item.productId.name} className="h-16 w-24 rounded object-cover" />
+              <Image
+                src={item.productId.image}
+                alt={item.productId.name}
+                width={400}
+                height={160}
+                className="rounded object-cover"
+              />
             )}
             <div>
               <p className="font-semibold">{item.productId.name}</p>

@@ -19,9 +19,5 @@ export default function AuthWrapper({ children, onLoginRedirect }: AuthWrapperPr
     }
   }
 
-  return (
-    <div onClick={handleClick} className="inline-block">
-      {children}
-    </div>
-  )
+  return <div onClick={handleClick}>{children}</div>
 }
