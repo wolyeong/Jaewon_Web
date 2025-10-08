@@ -88,14 +88,16 @@ export default function CartList() {
     }
   }
 
+  const totalPrice = cartItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0)
+
   if (loading) return <p className="text-center text-3xl font-bold">장바구니를 불러오는 중...</p>
   if (!cartItems.length) return <p className="text-center text-3xl font-bold">장바구니가 비어있습니다.</p>
 
   return (
     <div className="p-6">
-      <Button className="mb-4" onClick={handleClearAll}>
-        장바구니 전체 비우기
-      </Button>
+      <div className="mb-4 flex justify-between">
+        <Button onClick={handleClearAll}>장바구니 전체 비우기</Button>
+      </div>
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
         {cartItems.map(({ product, quantity }) => {
@@ -150,6 +152,16 @@ export default function CartList() {
             </div>
           )
         })}
+      </div>
+
+      <div className="mt-6 flex justify-end py-10">
+        <div className="px-20 text-xl font-bold">합계: ₩{totalPrice.toLocaleString()}</div>
+        <Button
+          className="bg-black/90 text-white hover:bg-black"
+          onClick={() => alert(`총 결제금액: ₩${totalPrice.toLocaleString()}`)}
+        >
+          구매하기
+        </Button>
       </div>
     </div>
   )

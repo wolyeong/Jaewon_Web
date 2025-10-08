@@ -40,7 +40,6 @@ export async function GET(request: Request) {
       product: item.productId,
       quantity: item.quantity,
     }))
-    console.log('장바구니 조회 성공:', items)
     return NextResponse.json({ items })
   } catch (err) {
     console.error('장바구니 조회 실패:', err)

@@ -14,7 +14,7 @@ export default function Products() {
         <CartList />
       </main>
 
-      <footer className="container mx-auto px-4 py-40 md:px-6">
+      <footer className="container mx-auto px-4 py-5 md:px-6">
         <p className="text-center text-sm text-muted-foreground">
           © {new Date().getFullYear()} Jaewon Store. All rights reserved.
         </p>
