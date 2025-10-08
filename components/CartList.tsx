@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
+import { useSession } from 'next-auth/react'
 
 interface ProductRef {
   _id: string
@@ -15,36 +16,34 @@ interface CartItemProps {
   quantity: number
 }
 
-interface CartListProps {
-  onTotalUpdate?: (total: number) => void
-}
-
-export default function CartList({ onTotalUpdate }: CartListProps) {
+export default function CartList() {
+  const { data: session } = useSession()
   const [cartItems, setCartItems] = useState<CartItemProps[]>([])
   const [loading, setLoading] = useState(true)
 
-  const fetchCart = async () => {
-    try {
-      const res = await fetch('/api/cartRoute')
-      const data = await res.json()
-      const items: CartItemProps[] = data.cart?.items || []
-      setCartItems(items)
-
-      const totalPrice = items.reduce((sum: number, item: CartItemProps) => {
-        return sum + item.productId.price * item.quantity
-      }, 0)
-
-      onTotalUpdate?.(totalPrice)
-    } catch (err) {
-      console.error(err)
-    } finally {
-      setLoading(false)
-    }
-  }
-
   useEffect(() => {
+    const fetchCart = async () => {
+      if (!session?.user?.nickname) {
+        setCartItems([])
+        setLoading(false)
+        return
+      }
+
+      try {
+        const res = await fetch(`/api/cart/get?nickname=${session.user.nickname}`)
+        const data = await res.json()
+        const items: CartItemProps[] = data.cart.items
+
+        setCartItems(items)
+      } catch (err) {
+        console.error(err)
+      } finally {
+        setLoading(false)
+      }
+    }
+
     fetchCart()
-  }, [])
+  }, [session])
 
   if (loading) return <p className="text-center text-3xl font-bold">장바구니를 불러오는 중...</p>
   if (!cartItems.length) return <p className="text-center text-3xl font-bold">장바구니가 비어있습니다.</p>
@@ -65,9 +64,6 @@ export default function CartList({ onTotalUpdate }: CartListProps) {
             )}
             <div>
               <p className="font-semibold">{item.productId.name}</p>
-              <p className="text-sm text-gray-500">
-                ₩{item.productId.price.toLocaleString()} x {item.quantity}
-              </p>
             </div>
           </div>
           <p className="font-semibold">₩{(item.productId.price * item.quantity).toLocaleString()}</p>

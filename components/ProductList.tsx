@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
-import { Button } from '@/components/ui/button'
+import AddToCartButton from '@/components/AddToCartButton'
 import AuthWrapper from '@/components/AuthWrapper'
 import { useRouter } from 'next/navigation'
 
@@ -71,7 +71,7 @@ export default function ProductList() {
 
             {/* 카테고리 */}
             {product.category?.length > 0 && (
-              <p className="mt-1 text-xs text-gray-500">{product.category.join(', ')}</p>
+              <p className="mt-1 py-2 text-xs text-gray-500">{product.category.join(', ')}</p>
             )}
 
             {/* 품절 표시 */}
@@ -79,14 +79,7 @@ export default function ProductList() {
 
             {/* 장바구니 버튼 */}
             <AuthWrapper onLoginRedirect={() => router.push('/signin')}>
-              <Button
-                disabled={isSoldOut}
-                className={`mt-3 w-full rounded py-2 text-white ${
-                  isSoldOut ? 'cursor-not-allowed bg-gray-400' : 'bg-blue-600 hover:bg-blue-700'
-                }`}
-              >
-                장바구니 담기
-              </Button>
+              <AddToCartButton productId={product._id}>장바구니 담기</AddToCartButton>
             </AuthWrapper>
           </div>
         )
