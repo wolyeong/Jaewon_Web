@@ -42,7 +42,7 @@ export default function Navbar() {
           </AuthWrapper>
         </nav>
 
-        {/* 인증 버튼 + 장바구니 */}
+        {/* 로그인, 회원가입, 장바구니 */}
         <div className="flex flex-1 items-center justify-end space-x-2 sm:space-x-4">
           <AuthButtons />
 

@@ -23,7 +23,6 @@ export default function SignUpPage() {
       if (text) {
         dupData = JSON.parse(text)
       }
-      // const dupData = await dupRes.json()
 
       // 백엔드에서 email/nickname 값을 문자열로 직접 반환하므로
       if (dupData?.check) {
