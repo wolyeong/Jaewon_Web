@@ -1,19 +1,49 @@
 import { NextResponse } from 'next/server'
 import dbConnect from '@/db/dbConnect'
 import Cart from '@/db/models/Cart'
+import { Types } from 'mongoose'
 
-// GET: 장바구니 조회
+interface Product {
+  _id: Types.ObjectId
+  name: string
+  price: number
+  image: string
+  category: string[]
+  description?: string
+  specs?: Record<string, string>
+}
+
+interface CartItemPopulated {
+  productId: Product
+  quantity: number
+}
+
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url)
     const nickname = searchParams.get('nickname')
-    if (!nickname) return NextResponse.json({ message: '로그인 필요' }, { status: 401 })
+    if (!nickname) {
+      return NextResponse.json({ message: '로그인 필요' }, { status: 401 })
+    }
 
     await dbConnect()
-    const cart = await Cart.findOne({ nickname })
-    return NextResponse.json({ cart })
+    const cart = await Cart.findOne({ nickname }).populate({
+      path: 'items.productId',
+      model: 'Products',
+    })
+
+    if (!cart) {
+      return NextResponse.json({ items: [] })
+    }
+
+    const items = (cart.items as CartItemPopulated[]).map((item) => ({
+      product: item.productId,
+      quantity: item.quantity,
+    }))
+    console.log('장바구니 조회 성공:', items)
+    return NextResponse.json({ items })
   } catch (err) {
-    console.error(err)
-    return NextResponse.json({ message: '장바구니 조회 실패', error: err }, { status: 500 })
+    console.error('장바구니 조회 실패:', err)
+    return NextResponse.json({ message: '장바구니 조회 실패', error: String(err) }, { status: 500 })
   }
 }

@@ -21,7 +21,7 @@ export default function AddToCartButton({ productId, children }: AddToCartButton
 
     setLoading(true)
     try {
-      const res = await fetch('/api/cart/add', {
+      const res = await fetch('/api/cart/update', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ productId, nickname: session.user.nickname }),
