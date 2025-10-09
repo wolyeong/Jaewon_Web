@@ -42,8 +42,8 @@ export default function Products() {
               Products
             </a>
             <AuthWrapper onLoginRedirect={() => router.push('/signin')}>
-              <a href="/orders" className="text-muted-foreground transition-colors hover:text-primary">
-                Orders
+              <a href="/records" className="text-muted-foreground transition-colors hover:text-primary">
+                Records
               </a>
             </AuthWrapper>
           </nav>

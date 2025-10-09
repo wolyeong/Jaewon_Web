@@ -56,7 +56,7 @@ export default function PurchaseModal({ open, setOpen, totalPrice, balance, item
 
       alert('구매가 완료되었습니다!\n잔고: ₩' + walletData.wallet.toLocaleString())
 
-      await fetch('/api/purchase/record', {
+      await fetch('/api/purchase/record/update', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

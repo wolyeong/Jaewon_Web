@@ -11,7 +11,7 @@ export default function Navbar() {
   const router = useRouter()
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="bRecord-b sticky top-0 z-50 w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-16 items-center px-4 md:px-6">
         {/* 로고 */}
         <div className="flex-1">
@@ -36,8 +36,8 @@ export default function Navbar() {
             Products
           </a>
           <AuthWrapper onLoginRedirect={() => router.push('/signin')}>
-            <a href="/orders" className="text-muted-foreground transition-colors hover:text-primary">
-              Orders
+            <a href="/records" className="text-muted-foreground transition-colors hover:text-primary">
+              Records
             </a>
           </AuthWrapper>
         </nav>
