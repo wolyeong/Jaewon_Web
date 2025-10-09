@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { useSession } from 'next-auth/react'
 import { Button } from '@/components/ui/button'
-import PurchaseModal from '@/components/PurchaseModal' // ✅ 추가
+import PurchaseModal from '@/components/PurchaseModal'
 
 interface Product {
   _id: string
@@ -27,7 +27,7 @@ export default function CartList() {
   const [loading, setLoading] = useState(true)
   const [updating, setUpdating] = useState<Record<string, boolean>>({})
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [balance] = useState(50000) // 💰 예시 잔고 (추후 DB연동 가능)
+  const [balance, setBalance] = useState(0) // 🟢 잔고 상태 추가
 
   const nickname = session?.user?.nickname
 
@@ -50,6 +50,21 @@ export default function CartList() {
       }
     }
     fetchCart()
+  }, [nickname])
+
+  // 잔고 불러오기
+  useEffect(() => {
+    const fetchBalance = async () => {
+      if (!nickname) return
+      try {
+        const res = await fetch(`/api/purchase/wallet/get?nickname=${encodeURIComponent(nickname)}`)
+        const data = await res.json()
+        setBalance(data.balance || 0)
+      } catch (err) {
+        console.error('잔고 불러오기 실패:', err)
+      }
+    }
+    fetchBalance()
   }, [nickname])
 
   // 수량 변경
@@ -96,13 +111,6 @@ export default function CartList() {
 
   // 총 결제 금액
   const totalPrice = cartItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0)
-
-  // 구매 버튼 클릭 시
-  const handlePurchase = () => {
-    alert('구매가 완료되었습니다!')
-    setIsModalOpen(false)
-    // ✅ 여기서 구매 기록 저장 API 호출 가능 (/api/purchase/add 등)
-  }
 
   if (loading) return <p className="text-center text-3xl font-bold">장바구니를 불러오는 중...</p>
   if (!cartItems.length) return <p className="text-center text-3xl font-bold">장바구니가 비어있습니다.</p>
@@ -181,7 +189,7 @@ export default function CartList() {
         setOpen={setIsModalOpen}
         totalPrice={totalPrice}
         balance={balance}
-        onPurchase={handlePurchase}
+        items={cartItems.map((item) => ({ productId: item.product._id, quantity: item.quantity }))}
       />
     </div>
   )
