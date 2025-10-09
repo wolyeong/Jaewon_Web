@@ -4,6 +4,8 @@ import Cart from '@/db/models/Cart'
 import { Types } from 'mongoose'
 import Product from '@/db/models/Product'
 
+export const dynamic = 'force-dynamic'
+
 interface Product {
   _id: Types.ObjectId
   name: string
