@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import dbConnect from '@/db/dbConnect'
-import Purchase from '@/db/models/Purchase'
+import Purchase from '@/db/models/Record'
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url)

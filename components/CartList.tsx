@@ -177,6 +177,7 @@ export default function CartList() {
       </div>
 
       <div className="mt-6 flex justify-end py-10">
+        <div className="px-20 text-xl font-bold">잔고: ₩{balance.toLocaleString()}</div>
         <div className="px-20 text-xl font-bold">합계: ₩{totalPrice.toLocaleString()}</div>
         <Button className="bg-black/90 text-white hover:bg-black" onClick={() => setIsModalOpen(true)}>
           구매하기
@@ -189,7 +190,12 @@ export default function CartList() {
         setOpen={setIsModalOpen}
         totalPrice={totalPrice}
         balance={balance}
-        items={cartItems.map((item) => ({ productId: item.product._id, quantity: item.quantity }))}
+        items={cartItems.map((item) => ({
+          productId: item.product._id,
+          name: item.product.name,
+          price: item.product.price,
+          quantity: item.quantity,
+        }))}
       />
     </div>
   )
