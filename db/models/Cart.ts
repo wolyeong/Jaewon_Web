@@ -6,7 +6,7 @@ const CartSchema = new mongoose.Schema(
     nickname: { type: String, required: true, unique: true }, // 사용자 닉네임
     items: [
       {
-        productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Products', required: true }, // 상품 _id
+        productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true }, // 상품 _id
         quantity: { type: Number, default: 1, required: true }, // 수량
       },
     ],
