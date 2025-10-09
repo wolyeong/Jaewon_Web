@@ -19,5 +19,5 @@ const ProductSchema = new mongoose.Schema(
 )
 
 // 이미 모델이 존재하면 재사용, 없으면 새로 생성
-const Product = mongoose.models.Product || mongoose.model('Product', ProductSchema)
+const Product = mongoose.models.Products || mongoose.model('Products', ProductSchema)
 export default Product
