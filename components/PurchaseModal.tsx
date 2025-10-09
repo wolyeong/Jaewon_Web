@@ -23,6 +23,28 @@ export default function PurchaseModal({ open, setOpen, totalPrice, balance, item
   const [loading, setLoading] = useState(false)
   const isEnough = balance >= totalPrice
 
+  const handleCharge = async () => {
+    if (!session?.user?.nickname) {
+      alert('로그인이 필요합니다.')
+      return
+    }
+
+    try {
+      const res = await fetch('/api/wallet/charge', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nickname: session.user.nickname }),
+      })
+
+      const data = await res.json()
+
+      alert(`${data.message}\n현재 잔액: ${data.wallet}원\n새로고침을 해주세요.`)
+    } catch (error) {
+      alert('서버 오류가 발생했습니다.')
+      console.error(error)
+    }
+  }
+
   const handlePurchase = async () => {
     if (!session?.user?.nickname) {
       alert('로그인이 필요합니다.')
@@ -107,7 +129,7 @@ export default function PurchaseModal({ open, setOpen, totalPrice, balance, item
           </Button>
 
           {!isEnough && (
-            <Button variant="outline" className="w-full">
+            <Button variant="outline" className="w-full" onClick={handleCharge}>
               금액 충전하기
             </Button>
           )}
