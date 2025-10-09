@@ -16,7 +16,6 @@ export async function POST(req: Request) {
       description: data.description,
       specs: data.specs,
     })
-    console.log('Created Product:', newProduct)
     return NextResponse.json(newProduct, { status: 201 })
   } catch (error) {
     console.error(error)

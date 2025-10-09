@@ -18,10 +18,10 @@ interface CartItemPopulated {
   quantity: number
 }
 
-export async function GET(request: Request) {
+export async function GET(req: Request) {
   try {
-    const { searchParams } = new URL(request.url)
-    const nickname = searchParams.get('nickname')
+    const url = new URL(req.url)
+    const nickname = url.searchParams.get('nickname')
     if (!nickname) {
       return NextResponse.json({ message: '로그인 필요' }, { status: 401 })
     }

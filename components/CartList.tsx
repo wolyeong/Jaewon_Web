@@ -184,7 +184,7 @@ export default function CartList() {
         </Button>
       </div>
 
-      {/* ✅ 구매 모달 */}
+      {/* 구매 모달 */}
       <PurchaseModal
         open={isModalOpen}
         setOpen={setIsModalOpen}
