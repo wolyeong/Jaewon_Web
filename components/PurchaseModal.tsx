@@ -40,19 +40,17 @@ export default function PurchaseModal({ open, setOpen, totalPrice, balance, item
           items,
         }),
       })
+      const data = await res.json()
+      if (!res.ok) {
+        alert(data.message || '구매 실패')
+        return
+      }
       const walletRes = await fetch('/api/purchase/wallet/update', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ nickname: session.user.nickname, totalPrice }),
       })
-
-      const data = await res.json()
       const walletData = await walletRes.json()
-
-      if (!res.ok) {
-        alert(data.message || '구매 실패')
-        return
-      }
 
       alert('구매가 완료되었습니다!\n잔고: ₩' + walletData.wallet.toLocaleString())
 
