@@ -65,7 +65,7 @@ export default function PurchaseModal({ open, setOpen, totalPrice, balance, item
           totalPrice,
         }),
       })
-
+      await fetch('/api/recommend/update', { method: 'POST' })
       // 장바구니 비우기
       await fetch('/api/cart/update', {
         method: 'POST',
