@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import dbConnect from '@/db/dbConnect'
 import Cart from '@/db/models/Cart'
 import { Types } from 'mongoose'
+import Product from '@/db/models/Product'
 
 interface Product {
   _id: Types.ObjectId
