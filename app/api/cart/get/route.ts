@@ -29,7 +29,7 @@ export async function GET(req: Request) {
     await dbConnect()
     const cart = await Cart.findOne({ nickname }).populate({
       path: 'items.productId',
-      model: 'Products',
+      model: 'Product',
     })
 
     if (!cart) {
