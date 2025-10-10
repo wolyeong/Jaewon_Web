@@ -1,8 +1,7 @@
 export interface User {
   email: string
   nickname: string
-  profile_image_url: string
+  wallet: string
   user_type: string
-  createdAt: Date
-  updatedAt: Date
+  password: Date
 }
