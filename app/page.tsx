@@ -42,7 +42,7 @@ export default function Home() {
           <p className="mx-auto mb-8 max-w-2xl text-muted-foreground md:text-xl">
             저희 Jaewon Store에서 다양한 상품을 만나보세요. 최고의 품질과 합리적인 가격으로 제공됩니다.
           </p>
-
+          {/* <Image src="/image.png" alt="이미지" width={400} height={160} className="rounded object-cover" /> */}
           <Button size="lg" onClick={() => router.push('/products')}>
             쇼핑하러가기
           </Button>

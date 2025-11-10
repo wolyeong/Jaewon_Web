@@ -4,12 +4,11 @@ import './globals.css'
 import ClientProviders from './ClientProviders'
 
 export const metadata: Metadata = {
-  title: '제목',
-  description: '설명',
   openGraph: {
-    title: '온그래프 제목',
-    description: '온그래프 설명',
-    images: '/png/image.png',
+    title: 'DeepAiBit | AI-Powered Data Systems',
+    description:
+      'DeepAiBit is an AI-driven digital healthcare company dedicated to designing healthier lifestyles for everyone.',
+    images: '/image.png',
   },
 }
 
