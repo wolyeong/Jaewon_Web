@@ -1,21 +1,18 @@
-// models/Cart.ts
-import mongoose from 'mongoose'
+import mongoose, { Schema } from 'mongoose'
+import '@/db/models/Product'
 
-const CartSchema = new mongoose.Schema(
+const CartSchema = new Schema(
   {
-    nickname: { type: String, required: true, unique: true }, // 사용자 닉네임
+    nickname: { type: String, required: true, unique: true },
     items: [
       {
-        productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Products', required: true }, // 상품 _id
-        quantity: { type: Number, default: 1, required: true }, // 수량
+        productId: { type: Schema.Types.ObjectId, ref: 'Product', required: true }, // ✅ ref 일치
+        quantity: { type: Number, default: 1, required: true },
       },
     ],
   },
-  {
-    timestamps: true,
-    collection: 'carts',
-  }
+  { timestamps: true, collection: 'carts' }
 )
 
-const Cart = mongoose.models.Carts || mongoose.model('Carts', CartSchema)
-export default Cart
+// ✅ 모델 이름은 'Cart' (단수)
+export default mongoose.models.Cart || mongoose.model('Cart', CartSchema)
