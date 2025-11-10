@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: '온그래프 제목',
     description: '온그래프 설명',
-    images: 'png/image.png',
+    images: '/png/image.png',
   },
 }
 
