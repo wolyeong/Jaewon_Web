@@ -8,7 +8,12 @@ export const metadata: Metadata = {
     title: 'DeepAiBit | AI-Powered Data Systems',
     description:
       'DeepAiBit is an AI-driven digital healthcare company dedicated to designing healthier lifestyles for everyone.',
-    images: '/image.png',
+    images: [
+      {
+        url: '/image.png',
+        alt: 'DeepAiBit 이미지',
+      },
+    ],
   },
 }
 
