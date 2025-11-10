@@ -4,6 +4,7 @@ import './globals.css'
 import ClientProviders from './ClientProviders'
 
 export const metadata: Metadata = {
+  title: 'DeepAiBit | AI-Powered Data Systems',
   openGraph: {
     title: 'DeepAiBit | AI-Powered Data Systems',
     description:
@@ -11,6 +12,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: 'https://jaewonstore.vercel.app/gaitwise-logo.svg',
+        width: 800,
+        height: 600,
         alt: 'DeepAiBit 이미지',
       },
     ],
