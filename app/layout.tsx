@@ -12,8 +12,6 @@ export const metadata: Metadata = {
     images: [
       {
         url: 'https://jaewon-store.vercel.app/metadata_image.png',
-        width: 2200,
-        height: 1100,
         alt: 'DeepAiBit 이미지',
       },
     ],
