@@ -11,7 +11,7 @@ export const metadata: Metadata = {
       'DeepAiBit is an AI-driven digital healthcare company dedicated to designing healthier lifestyles for everyone.',
     images: [
       {
-        url: 'https://jaewon-store.vercel.app/metadata_image.png',
+        url: 'https://jaewon-store.vercel.app/image.png',
         width: 800,
         height: 400,
         alt: 'DeepAiBit 이미지',
