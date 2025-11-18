@@ -1,79 +1,110 @@
+'use client'
+
+import { Button } from '@/components/ui/button'
+import Navbar from '@/components/Navbar'
+import { useRouter } from 'next/navigation'
+import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 
-export default function Home() {
-  return (
-    <div className="grid min-h-screen grid-rows-[20px_1fr_20px] items-center justify-items-center gap-16 p-8 pb-20 font-[family-name:var(--font-geist-sans)] sm:p-20">
-      <main className="row-start-2 flex flex-col items-center gap-8 sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-center font-[family-name:var(--font-geist-mono)] text-sm sm:text-left">
-          <li className="mb-2">
-            Get started by editing{' '}
-            <code className="rounded bg-black/[.05] px-1 py-0.5 font-semibold dark:bg-white/[.06]">app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+interface Product {
+  _id: string
+  name: string
+  image: string
+  price: number
+  category: string[]
+  description?: string
+  specs?: Record<string, string>
+  stock?: number
+}
 
-        <div className="flex flex-col items-center gap-4 sm:flex-row">
-          <a
-            className="flex h-10 items-center justify-center gap-2 rounded-full border border-solid border-transparent bg-foreground px-4 text-sm text-background transition-colors hover:bg-[#383838] sm:h-12 sm:px-5 sm:text-base dark:hover:bg-[#ccc]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="flex h-10 items-center justify-center rounded-full border border-solid border-black/[.08] px-4 text-sm transition-colors hover:border-transparent hover:bg-[#f2f2f2] sm:h-12 sm:min-w-44 sm:px-5 sm:text-base dark:border-white/[.145] dark:hover:bg-[#1a1a1a]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
+export default function Home() {
+  const router = useRouter()
+  const [recommended, setRecommended] = useState<Product[]>([])
+
+  useEffect(() => {
+    const fetchRecommended = async () => {
+      try {
+        const res = await fetch('/api/recommend/get')
+        const data = await res.json()
+        setRecommended(data)
+      } catch (err) {
+        console.error('추천 상품 로드 실패:', err)
+      }
+    }
+    fetchRecommended()
+  }, [])
+  return (
+    <div className="antialiased">
+      <Navbar />
+      <main>
+        <section className="container mx-auto px-4 py-16 text-center md:px-6 md:py-24">
+          <h1 className="mb-4 text-4xl font-extrabold md:text-6xl">필요하신 물건이 있으신가요?</h1>
+          <p className="mx-auto mb-8 max-w-2xl text-muted-foreground md:text-xl">
+            저희 Jaewon Store에서 다양한 상품을 만나보세요. 최고의 품질과 합리적인 가격으로 제공됩니다.
+          </p>
+          {/* <Image src="/image.png" alt="이미지" width={400} height={160} className="rounded object-cover" /> */}
+          <Button size="lg" onClick={() => router.push('/products')}>
+            쇼핑하러가기
+          </Button>
+          <h2 className="mb-6 py-10 text-2xl font-bold">🔥 추천 상품</h2>
+
+          {recommended.length === 0 ? (
+            <p className="text-gray-500">추천 상품이 없습니다.</p>
+          ) : (
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {recommended.map((product) => {
+                const isSoldOut = product.stock !== undefined && product.stock <= 0
+                return (
+                  <div key={product._id} className="relative rounded border p-4 shadow transition hover:shadow-lg">
+                    {/* 이미지 */}
+                    {product.image && (
+                      <Image
+                        src={product.image}
+                        alt={product.name}
+                        width={400}
+                        height={160}
+                        className="rounded object-cover"
+                      />
+                    )}
+                    {/* 이름 + 툴팁 */}
+                    <h3 className={`relative mt-2 text-lg font-bold ${isSoldOut ? 'text-gray-400 line-through' : ''}`}>
+                      <span className="group cursor-pointer">
+                        {product.name}
+
+                        {(product.description || (product.specs && Object.keys(product.specs).length > 0)) && (
+                          <div className="absolute left-0 top-full z-10 mt-1 hidden w-64 rounded bg-gray-900 p-3 text-sm text-white group-hover:block">
+                            {product.description && <p className="mb-1">{product.description}</p>}
+                            {product.specs && Object.keys(product.specs).length > 0 && (
+                              <ul className="list-disc pl-4">
+                                {Object.entries(product.specs).map(([key, value]) => (
+                                  <li key={key}>
+                                    <strong>{key}:</strong> {value}
+                                  </li>
+                                ))}
+                              </ul>
+                            )}
+                            {product.stock && <p className="mb-1">재고: {product.stock}</p>}
+                          </div>
+                        )}
+                      </span>
+                    </h3>
+                    {/* 가격 */}
+                    <p className="mt-1 font-semibold">₩{product.price.toLocaleString()}</p>
+                    {/* 카테고리 */}
+                    {product.category?.length > 0 && (
+                      <p className="mt-1 py-2 text-xs text-gray-500">{product.category.join(', ')}</p>
+                    )}
+                  </div>
+                )
+              })}
+            </div>
+          )}
+        </section>
       </main>
-      <footer className="row-start-3 flex flex-wrap items-center justify-center gap-6">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image aria-hidden src="https://nextjs.org/icons/file.svg" alt="File icon" width={16} height={16} />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image aria-hidden src="https://nextjs.org/icons/window.svg" alt="Window icon" width={16} height={16} />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image aria-hidden src="https://nextjs.org/icons/globe.svg" alt="Globe icon" width={16} height={16} />
-          Go to nextjs.org →
-        </a>
+      <footer className="container mx-auto px-4 py-5 md:px-6">
+        <p className="text-center text-sm text-muted-foreground">
+          © {new Date().getFullYear()} Jaewon Store. All rights reserved.
+        </p>
       </footer>
     </div>
   )
